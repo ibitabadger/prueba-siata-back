@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.Python
+venv/
+.venv/
+env/
+
+# Dependencies / build
+*.egg
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Env y secretos
+.env
+.env.local
+.env.*.local
+*.pem
+
+# IDE / cache
+.idea/
+.vscode/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+# Logs y DB local
+*.log
+*.db
+*.sqlite3
+
