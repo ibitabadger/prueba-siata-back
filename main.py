@@ -14,7 +14,7 @@ from controllers import (
 from dependencies import require_auth_for_protected_paths
 
 # CORS: solo el origen del frontend definido en .env (FRONTEND_URL)
-_frontend_url = (os.getenv("FRONTEND_URL")).strip()
+_frontend_url = os.getenv("FRONTEND_URL")
 _cors_origins = [_frontend_url]
 
 app = FastAPI(
