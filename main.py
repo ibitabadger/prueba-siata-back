@@ -1,7 +1,10 @@
 import os
 
+from dotenv import load_dotenv
 from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
+load_dotenv()
 
 from controllers import (
     auth_controller,
@@ -13,9 +16,11 @@ from controllers import (
 )
 from dependencies import require_auth_for_protected_paths
 
-# CORS: solo el origen del frontend definido en .env (FRONTEND_URL)
-_frontend_url = os.getenv("FRONTEND_URL" or "FRONTEND_URL_PROD")
-_cors_origins = [_frontend_url]
+_cors_origins = [
+    url.strip().rstrip("/")
+    for url in [os.getenv("FRONTEND_URL", ""), os.getenv("FRONTEND_URL_PROD", "")]
+    if url.strip()
+]
 
 app = FastAPI(
     title="API Logística",
