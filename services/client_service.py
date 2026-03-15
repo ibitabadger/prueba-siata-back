@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 
-from models import Client
+from models import Client, Shipment
+from services.exceptions import ConflictError
 
 
 def list_clients(db: Session) -> list[Client]:
@@ -34,6 +35,8 @@ def delete_client(client_id: int, db: Session) -> bool:
     client = db.query(Client).filter(Client.id == client_id).first()
     if not client:
         return False
+    if db.query(Shipment).filter(Shipment.client_id == client_id).first():
+        raise ConflictError("No se puede eliminar el cliente porque tiene envíos asociados.")
     db.delete(client)
     db.commit()
     return True

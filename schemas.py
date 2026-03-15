@@ -95,7 +95,7 @@ class ShipmentCreate(BaseModel):
     def validate_plate(cls, v: Optional[str]) -> Optional[str]:
         if v is not None:
             if not re.match(r"^[A-Z]{3}[0-9]{3}$", v):
-                raise ValueError("Plate must follow the format AAA123 (3 uppercase letters + 3 numbers)")
+                raise ValueError("La placa debe seguir el formato AAA123")
         return v
 
     @field_validator("fleet_number")
@@ -103,7 +103,7 @@ class ShipmentCreate(BaseModel):
     def validate_fleet(cls, v: Optional[str]) -> Optional[str]:
         if v is not None:
             if not re.match(r"^[A-Z]{3}[0-9]{4}[A-Z]$", v):
-                raise ValueError("Fleet number must follow the format AAA1234A (3 letters + 4 numbers + 1 letter)")
+                raise ValueError("El numero de flota debe ser AAA1234A (3 letras + 4 numeros + 1 letra)")
         return v
 
     @model_validator(mode="after")

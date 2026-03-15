@@ -8,3 +8,7 @@ class DuplicateError(Exception):
 
 class UnauthorizedError(Exception):
     """No autorizado (mapeable a 401)."""
+
+
+class ConflictError(Exception):
+    """Conflicto de integridad (mapeable a 409)."""

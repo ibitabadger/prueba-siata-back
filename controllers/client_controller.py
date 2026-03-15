@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from dependencies import get_db, get_current_user
 from models import User
 from schemas import ClientCreate, ClientResponse, ClientUpdate
+from services.exceptions import ConflictError
 from services.client_service import (
     create_client,
     delete_client as delete_client_svc,
@@ -54,5 +55,8 @@ def update_client_endpoint(
 def delete_client_endpoint(
     client_id: int, db: Session = Depends(get_db), _: User = Depends(get_current_user)
 ):
-    if not delete_client_svc(client_id, db):
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Cliente no encontrado")
+    try:
+        if not delete_client_svc(client_id, db):
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Cliente no encontrado")
+    except ConflictError as e:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(e))
