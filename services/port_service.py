@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from models import Port
+from models import Port, Shipment
 
 
 def list_ports(db: Session) -> list:
@@ -34,6 +34,7 @@ def delete_port(port_id: int, db: Session) -> bool:
     port = db.query(Port).filter(Port.id == port_id).first()
     if not port:
         return False
+    db.query(Shipment).filter(Shipment.port_id == port_id).update({Shipment.port_id: None})
     db.delete(port)
     db.commit()
     return True

@@ -1,3 +1,5 @@
+import os
+
 from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -11,17 +13,20 @@ from controllers import (
 )
 from dependencies import require_auth_for_protected_paths
 
+# CORS: solo el origen del frontend definido en .env (FRONTEND_URL)
+_frontend_url = (os.getenv("FRONTEND_URL")).strip()
+_cors_origins = [_frontend_url]
+
 app = FastAPI(
     title="API Logística",
     description="Prueba técnica gestión de envíos terrestres y marítimos",
     version="1.0.0",
-    # protege todo excepto /, /docs
     dependencies=[Depends(require_auth_for_protected_paths)],
 )
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=_cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

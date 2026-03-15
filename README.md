@@ -1,6 +1,9 @@
 # Prueba SIATA - EAFIT (Backend)
 
 Backend desarrollado con **Python**, **FastAPI**, **SQLAlchemy**, **Alembic** y **PostgreSQL(Supabase)**.
+Desplegado en: https://prueba-siata-back.onrender.com
+Documentacion disponible en: https://prueba-siata-back.onrender.com/docs
+
 
 ## Requisitos previos
 

@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from models import Warehouse
+from models import Shipment, Warehouse
 
 
 def list_warehouses(db: Session) -> list:
@@ -34,6 +34,7 @@ def delete_warehouse(warehouse_id: int, db: Session) -> bool:
     warehouse = db.query(Warehouse).filter(Warehouse.id == warehouse_id).first()
     if not warehouse:
         return False
+    db.query(Shipment).filter(Shipment.warehouse_id == warehouse_id).update({Shipment.warehouse_id: None})
     db.delete(warehouse)
     db.commit()
     return True
