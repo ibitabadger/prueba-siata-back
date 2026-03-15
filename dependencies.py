@@ -49,11 +49,12 @@ def require_auth_for_protected_paths(
     db: DBSession = Depends(get_db),
 ) -> User | None:
     """
-    - Deja pasar sin token: /, /docs
+    - Deja pasar sin token: /, /docs, /redoc, /openapi.json
     - Para el resto exige Authorization: Bearer <token>.
     """
     path = request.url.path
-    if path in {"/", "/docs"} or path.startswith("/api/auth"):
+    public_paths = {"/", "/docs", "/redoc", "/openapi.json"}
+    if path in public_paths or path.startswith("/api/auth"):
         return None
 
     auth_header = request.headers.get("Authorization")

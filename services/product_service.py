@@ -1,7 +1,6 @@
 from sqlalchemy.orm import Session
 
 from models import Product, Shipment
-from services.exceptions import ConflictError
 
 
 def _serialize_logistics_type(data: dict) -> dict:
@@ -44,8 +43,7 @@ def delete_product(product_id: int, db: Session) -> bool:
     product = db.query(Product).filter(Product.id == product_id).first()
     if not product:
         return False
-    if db.query(Shipment).filter(Shipment.product_id == product_id).first():
-        raise ConflictError("No se puede eliminar el producto porque tiene envíos asociados.")
+    db.query(Shipment).filter(Shipment.product_id == product_id).update({Shipment.product_id: None})
     db.delete(product)
     db.commit()
     return True

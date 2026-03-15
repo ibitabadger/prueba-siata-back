@@ -4,7 +4,6 @@ from sqlalchemy.orm import Session
 from dependencies import get_db, get_current_user
 from models import User
 from schemas import ProductCreate, ProductResponse, ProductUpdate
-from services.exceptions import ConflictError
 from services.product_service import (
     create_product,
     delete_product as delete_product_svc,
@@ -56,8 +55,5 @@ def update_product_endpoint(
 def delete_product_endpoint(
     product_id: int, db: Session = Depends(get_db), _: User = Depends(get_current_user)
 ):
-    try:
-        if not delete_product_svc(product_id, db):
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Producto no encontrado")
-    except ConflictError as e:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(e))
+    if not delete_product_svc(product_id, db):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Producto no encontrado")
